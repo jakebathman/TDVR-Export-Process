@@ -11,9 +11,35 @@ Public Sub mProcessTDVRExportSheet()
     Dim shtSQL As Worksheet
     Dim boolDoneSorting As Boolean
     Dim intCol1%, intCol2%, intCol3%, intCol4%, intCol5%, intCol6%, intCol7%, intCol8%, intCol9%, intCol10%
-    Dim t
+    Dim t, w, ss, wb, sh
 
     Application.ScreenUpdating = False
+
+    Set wb = ThisWorkbook
+
+    For Each sh In wb.Sheets
+        If sh.Name = "Old TDVR Export" Then
+            Application.DisplayAlerts = False
+            sh.Delete
+            Application.DisplayAlerts = True
+        End If
+    Next sh
+
+
+
+
+    'Get export sheet if it looks like it's open
+    For Each w In Application.Workbooks
+        If InStr(1, w.FullName, "Downloads\responder", vbTextCompare) > 0 Then
+            Set ss = w.Sheets(1)
+            ss.Copy Before:=wb.Sheets(1)
+            t = Timer
+            While Timer < t + 1
+                DoEvents
+            Wend
+            w.Close savechanges:=False
+        End If
+    Next w
 
     ' Duplicate sheet (preserving original sheet)
     On Error Resume Next
@@ -85,7 +111,7 @@ Public Sub mProcessTDVRExportSheet()
         End Select
         If c = 10 Then boolDoneSorting = True
     Next j
-    
+
     'Columns("A:J").Insert shift:=xlToRight
     Call MoveCol(intCol1, 11)
     Call MoveCol(intCol2, 12)
@@ -111,6 +137,9 @@ Public Sub mProcessTDVRExportSheet()
 
     ' Save as CSV
     Call ExportToCSV(ThisWorkbook.Name, shtSQL.Name, "CSVforSQL")
+    shtExport.Name = "Old TDVR Export"
+
+
 
 End Sub
 

@@ -80,5 +80,5 @@ Public Sub ExportToCSV(strCurWBName As String, strCurWSName As String, Optional 
     If vbOpenFolder = vbYes Then
         Shell "explorer.exe " & strPath, vbNormalFocus
     End If
-
+    
 End Sub
