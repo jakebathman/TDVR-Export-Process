@@ -33,13 +33,13 @@ Public Sub ExportToCSV(strCurWBName As String, strCurWSName As String, Optional 
     strNewWBName = strOutputPrefix & strDate & "at" & strTime & ".csv"
 
     strAWName = ActiveWorkbook.Name
-    
+
     t = Timer
     While Timer < t + 0.1
         DoEvents
     Wend
 
-    
+
     strTempNewWBName = "CSVforSQL"
     Set wbCSVWorkbook = Workbooks.Add
     strCurDir = ThisWorkbook.Path
@@ -71,14 +71,14 @@ Public Sub ExportToCSV(strCurWBName As String, strCurWSName As String, Optional 
     While Timer < t + 0.5
         DoEvents
     Wend
-    
+
     Application.DisplayAlerts = True
 
     vbOpenFolder = MsgBox("The file was exported successfully. You may find it in the same directory as this workbook." & vbCrLf & vbCrLf _
-     & "Open the folder location now?", vbYesNo)
+                        & "Open the folder location now?", vbYesNo)
 
     If vbOpenFolder = vbYes Then
         Shell "explorer.exe " & strPath, vbNormalFocus
     End If
-    
+
 End Sub
